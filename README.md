@@ -12,9 +12,9 @@ root
 | '-CMakeLists.txt
 |-LibProject
 | |-inc
-| | '-test.h
+| | '-library.h
 | |-src
-| | |-test.cpp
+| | |-library.cpp
 | | '-CMakeLists.txt
 | '-CMakeLists.txt
 '-CMakeLists.txt
