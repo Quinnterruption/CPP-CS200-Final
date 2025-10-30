@@ -45,17 +45,17 @@ struct coord {
 //        z += obj.z;
 //        return *this;
 //    }
-    friend std::ostream& operator<<(std::ostream& os, coord obj) {
+    friend std::ostream& operator<<(std::ostream& os, const coord& obj) {
         std::cout << "{" << obj[0] << ", " << obj[1] << ", " << obj[2] << "}";
         return os;
     }
-    coord& operator-=(coord obj) {
+    coord& operator-=(const coord& obj) {
         for (int i = 0; i < 3; i++) {
             coordinates[i] -= obj[i];
         }
         return *this;
     }
-    coord& operator+=(coord obj) {
+    coord& operator+=(const coord& obj) {
         for (int i = 0; i < 3; i++) {
             coordinates[i] += obj[i];
         }
@@ -79,10 +79,10 @@ class WireFrame {
     coord topLeft;
     coord botRight;
     coord getOrigin();
-    array<array<double, 3>, 3> matrixMult(array<array<double, 3>, 3> first, array<array<double, 3>, 3> second);
+    array<array<double, 3>, 3> matrixMult(const array<array<double, 3>, 3>& first, const array<array<double, 3>, 3>& second);
 public:
     WireFrame(coord topLeft, coord botRight) : topLeft(topLeft), botRight(botRight) {}
-    friend std::ostream& operator << (std::ostream& os, WireFrame obj) {
+    friend std::ostream& operator << (std::ostream& os, const WireFrame& obj) {
         std::cout << obj.topLeft << "\n" << obj.botRight << "\n";
         return os;
     }
