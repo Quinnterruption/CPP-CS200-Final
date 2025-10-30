@@ -11,32 +11,61 @@
 using std::array;
 
 struct coord {
-    double x;
-    double y;
-    double z;
+    array<double, 3> coordinates{};
+//    double x;
+//    double y;
+//    double z;
 
-    coord(double x, double y, double z) : x(x), y(y), z(z) {}
-    coord() : x(0), y(0), z(0) {}
-    void update(double _x, double _y, double _z) {
-        x = _x;
-        y = _y;
-        z = _z;
+    coord(std::initializer_list<double> init) {
+        if (init.size() != 3) {
+            throw std::invalid_argument("Coord must have exactly 3 elements");
+        }
+        std::copy(init.begin(), init.end(), coordinates.begin());
     }
-    friend std::ostream& operator << (std::ostream& os, coord obj) {
-        std::cout << "{" << obj.x << ", " << obj.y << ", " << obj.z << "}";
+//    coord(double x, double y, double z) : x(x), y(y), z(z) {}
+//    coord() : x(0), y(0), z(0) {}
+//    void update(double _x, double _y, double _z) {
+//        x = _x;
+//        y = _y;
+//        z = _z;
+//    }
+//    friend std::ostream& operator << (std::ostream& os, coord obj) {
+//        std::cout << "{" << obj.x << ", " << obj.y << ", " << obj.z << "}";
+//        return os;
+//    }
+//    coord& operator-=(coord obj) {
+//        x -= obj.x;
+//        y -= obj.y;
+//        z -= obj.z;
+//        return *this;
+//    }
+//    coord& operator+=(coord obj) {
+//        x += obj.x;
+//        y += obj.y;
+//        z += obj.z;
+//        return *this;
+//    }
+    friend std::ostream& operator<<(std::ostream& os, coord obj) {
+        std::cout << "{" << obj[0] << ", " << obj[1] << ", " << obj[2] << "}";
         return os;
     }
     coord& operator-=(coord obj) {
-        x -= obj.x;
-        y -= obj.y;
-        z -= obj.z;
+        for (int i = 0; i < 3; i++) {
+            coordinates[i] -= obj[i];
+        }
         return *this;
     }
     coord& operator+=(coord obj) {
-        x += obj.x;
-        y += obj.y;
-        z += obj.z;
+        for (int i = 0; i < 3; i++) {
+            coordinates[i] += obj[i];
+        }
         return *this;
+    }
+    double& operator[](std::size_t idx) {
+        return coordinates[idx];
+    }
+    const double& operator[](std::size_t idx) const {
+        return coordinates[idx];
     }
 };
 

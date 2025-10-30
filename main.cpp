@@ -3,11 +3,11 @@
 #include "extra/WireFrame.h"
 
 int main() {
-    coord topLeft(3, -4, 5);
-    coord botRight(4, 6, 1);
+    coord topLeft = {3, -4, 5};
+    coord botRight = {4, 6, 1};
     WireFrame square = WireFrame(topLeft, botRight);
     std::cout << square;
-    square.rotate(rotateX | rotateY);
+    square.rotate(rotateX);
     std::cout << square;
 }
 
