@@ -1,7 +1,7 @@
 # CPP-CS200-Final
 
 ### Sources
-For understanding the Win32 API I used `https://winprog.org/tutorial/message_loop.html`
+For understanding the Win32 API I used `https://winprog.org/tutorial/`
 
 ### File Structure
 ```
