@@ -1,7 +1,8 @@
 # CPP-CS200-Final
 
 ### Sources
-For understanding the Win32 API I used `https://winprog.org/tutorial/`
+Win32 API Help `https://winprog.org/tutorial/`
+Computer Screen Icon `https://icon-icons.com/icon/computer-screen/102708`
 
 ### File Structure
 ```
