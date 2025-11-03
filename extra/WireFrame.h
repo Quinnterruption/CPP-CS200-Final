@@ -12,9 +12,6 @@ using std::array;
 
 struct coord {
     array<double, 3> coordinates{};
-//    double x;
-//    double y;
-//    double z;
 
     coord(std::initializer_list<double> init) {
         if (init.size() != 3) {
@@ -22,48 +19,30 @@ struct coord {
         }
         std::copy(init.begin(), init.end(), coordinates.begin());
     }
-//    coord(double x, double y, double z) : x(x), y(y), z(z) {}
-//    coord() : x(0), y(0), z(0) {}
-//    void update(double _x, double _y, double _z) {
-//        x = _x;
-//        y = _y;
-//        z = _z;
-//    }
-//    friend std::ostream& operator << (std::ostream& os, coord obj) {
-//        std::cout << "{" << obj.x << ", " << obj.y << ", " << obj.z << "}";
-//        return os;
-//    }
-//    coord& operator-=(coord obj) {
-//        x -= obj.x;
-//        y -= obj.y;
-//        z -= obj.z;
-//        return *this;
-//    }
-//    coord& operator+=(coord obj) {
-//        x += obj.x;
-//        y += obj.y;
-//        z += obj.z;
-//        return *this;
-//    }
+
     friend std::ostream& operator<<(std::ostream& os, const coord& obj) {
         std::cout << "{" << obj[0] << ", " << obj[1] << ", " << obj[2] << "}";
         return os;
     }
+
     coord& operator-=(const coord& obj) {
         for (int i = 0; i < 3; i++) {
             coordinates[i] -= obj[i];
         }
         return *this;
     }
+
     coord& operator+=(const coord& obj) {
         for (int i = 0; i < 3; i++) {
             coordinates[i] += obj[i];
         }
         return *this;
     }
+
     double& operator[](std::size_t idx) {
         return coordinates[idx];
     }
+
     const double& operator[](std::size_t idx) const {
         return coordinates[idx];
     }
@@ -76,17 +55,26 @@ enum rotationFlags {
 };
 
 class WireFrame {
-    coord topLeft;
-    coord botRight;
     coord getOrigin();
     array<array<double, 3>, 3> matrixMult(const array<array<double, 3>, 3>& first, const array<array<double, 3>, 3>& second);
 public:
-    WireFrame(coord topLeft, coord botRight) : topLeft(topLeft), botRight(botRight) {}
+    coord topLeft;
+    coord topRight;
+    coord botLeft;
+    coord botRight;
+
+    WireFrame(coord topLeft, coord botRight) : topLeft(topLeft), botRight(botRight), topRight({0, 0, 0}), botLeft({0, 0, 0}) {
+        topRight = {botRight[0], topLeft[1], 0};
+        botLeft = {topLeft[0], botRight[1], 0};
+    }
+
     friend std::ostream& operator << (std::ostream& os, const WireFrame& obj) {
         std::cout << obj.topLeft << "\n" << obj.botRight << "\n";
         return os;
     }
+
     void rotate(int axis);
+    void updateLocation(coord amount);
 };
 
 
