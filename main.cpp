@@ -48,7 +48,7 @@ void onIdle(int w, int h, GameWindowBuffer& gameWindowBuffer) {
 
 //    gameWindowBuffer.drawSquare(square);
     gameWindowBuffer.drawCube(cube);
-    cube.rotate(rotateZ);
+    cube.rotate(rotateZ | rotateY | rotateX);
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -193,7 +193,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             TranslateMessage(&Msg);
             DispatchMessage(&Msg);
         } else {
-//            onIdle(width, height, windowStuff.gameWindowBuffer);
+            onIdle(width, height, windowStuff.gameWindowBuffer);
             SendMessage(hwnd, WM_PAINT, 0, 0);
         }
     }
