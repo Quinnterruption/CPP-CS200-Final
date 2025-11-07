@@ -58,14 +58,22 @@ class WireFrame {
     coord getOrigin();
     array<array<double, 3>, 3> matrixMult(const array<array<double, 3>, 3>& first, const array<array<double, 3>, 3>& second);
 public:
-    coord topLeft;
-    coord topRight;
-    coord botLeft;
-    coord botRight;
+    coord topLeft = {0, 0, 0};
+    coord topRight = {0, 0, 0};
+    coord botLeft = {0, 0, 0};
+    coord botRight = {0, 0, 0};
+    array<coord, 8> coordinates = {{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
 
-    WireFrame(coord topLeft, coord botRight) : topLeft(topLeft), botRight(botRight), topRight({0, 0, 0}), botLeft({0, 0, 0}) {
+    WireFrame(coord topLeft, coord botRight) : topLeft(topLeft), botRight(botRight) {
         topRight = {botRight[0], topLeft[1], 0};
         botLeft = {topLeft[0], botRight[1], 0};
+    }
+
+    WireFrame(std::initializer_list<coord> init) {
+        if (init.size() != 8) {
+            throw std::invalid_argument("Coordinates must have exactly 8 elements");
+        }
+        std::copy(init.begin(), init.end(), coordinates.begin());
     }
 
     friend std::ostream& operator << (std::ostream& os, const WireFrame& obj) {

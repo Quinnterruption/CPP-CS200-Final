@@ -18,7 +18,24 @@ int width, height;
 const char g_szClassName[] = "myWindowClass";
 coord topLeft = {300, 400, 500};
 coord botRight = {400, 600, 100};
-WireFrame square = WireFrame(topLeft, botRight);
+
+double xOne = 1200;
+double xTwo = xOne + 100;
+double yOne = 600;
+double yTwo = yOne + 100;
+double dist1 = 100;
+double dist2 = dist1 + 100;
+
+coord topFrontLeft = {xOne, yOne, dist1};
+coord topFrontRight = {xTwo, yOne, dist1};
+coord topBackRight = {xTwo, yOne, dist2};
+coord topBackLeft = {xOne, yOne, dist2};
+coord botBackLeft = {xOne, yTwo, dist2};
+coord botBackRight = {xTwo, yTwo, dist2};
+coord botFrontRight = {xTwo, yTwo, dist1};
+coord botFrontLeft = {xOne, yTwo, dist1};
+//WireFrame square = WireFrame(topLeft, botRight);
+WireFrame cube = WireFrame({topFrontLeft, topFrontRight, topBackRight, topBackLeft, botBackLeft, botBackRight, botFrontRight, botFrontLeft});
 
 void onIdle(int w, int h, GameWindowBuffer& gameWindowBuffer) {
     gameWindowBuffer.clear();
@@ -29,8 +46,9 @@ void onIdle(int w, int h, GameWindowBuffer& gameWindowBuffer) {
 //        }
 //    }
 
-    gameWindowBuffer.drawSquare(square);
-    square.rotate(rotateZ);
+//    gameWindowBuffer.drawSquare(square);
+    gameWindowBuffer.drawCube(cube);
+    cube.rotate(rotateZ);
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -96,17 +114,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         case WM_COMMAND:
             switch(LOWORD(wParam)) {
                 case ID_FILE_EXIT:
-                    square.updateLocation({-10, -10, -10});
+//                    square.updateLocation({-10, -10, -10});
                     break;
                 case ID_STUFF_GO:
-                    square.updateLocation({10, 10, 10});
+//                    square.updateLocation({10, 10, 10});
                     break;
             }
             break;
-//        case WM_LBUTTONDOWN: {
-//            square.updateLocation({10, 10, 10});
-//            break;
-//        }
+        case WM_LBUTTONDOWN: {
+            windowStuff.gameWindowBuffer.clear();
+            windowStuff.gameWindowBuffer.drawCube(cube);
+            cube.rotate(rotateZ);
+            break;
+        }
         case WM_CLOSE:
             windowStuff.running = false;
             break;
@@ -173,7 +193,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             TranslateMessage(&Msg);
             DispatchMessage(&Msg);
         } else {
-            onIdle(width, height, windowStuff.gameWindowBuffer);
+//            onIdle(width, height, windowStuff.gameWindowBuffer);
             SendMessage(hwnd, WM_PAINT, 0, 0);
         }
     }
