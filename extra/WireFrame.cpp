@@ -140,8 +140,31 @@ matrix3 WireFrame::matrixMult(const matrix3& first, const matrix3& second) {
 }
 
 void WireFrame::updateLocation(coord amount) {
-    topLeft += amount;
-    topRight += amount;
-    botLeft += amount;
-    botRight += amount;
+    for (int i = 0; i < 8; i++) {
+        coordinates[i] += amount;
+    }
+//    topLeft += amount;
+//    topRight += amount;
+//    botLeft += amount;
+//    botRight += amount;
+}
+
+WireFrame::WireFrame(std::initializer_list<coord> init) {
+    if (init.size() != 8) {
+        throw std::invalid_argument("Coordinates must have exactly 8 elements");
+    }
+    std::copy(init.begin(), init.end(), coordinates.begin());
+}
+
+WireFrame::WireFrame(coord topLeft, double height, double length, double depth) {
+    for (coord& coordinate : coordinates) {
+        coordinate = topLeft;
+    }
+    coordinates[1] += {length, 0, 0};
+    coordinates[2] += {length, 0, depth};
+    coordinates[3] += {0, 0, depth};
+    coordinates[4] += {0, height, depth};
+    coordinates[5] += {length, height, depth};
+    coordinates[6] += {length, height, 0};
+    coordinates[7] += {0, height, 0};
 }

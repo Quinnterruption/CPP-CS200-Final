@@ -58,28 +58,29 @@ class WireFrame {
     coord getOrigin();
     array<array<double, 3>, 3> matrixMult(const array<array<double, 3>, 3>& first, const array<array<double, 3>, 3>& second);
 public:
+    /* DEPRECATED
     coord topLeft = {0, 0, 0};
     coord topRight = {0, 0, 0};
     coord botLeft = {0, 0, 0};
     coord botRight = {0, 0, 0};
+     */
     array<coord, 8> coordinates = {{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
 
+    /* DEPRECATED
     WireFrame(coord topLeft, coord botRight) : topLeft(topLeft), botRight(botRight) {
         topRight = {botRight[0], topLeft[1], 0};
         botLeft = {topLeft[0], botRight[1], 0};
-    }
+    }*/
 
-    WireFrame(std::initializer_list<coord> init) {
-        if (init.size() != 8) {
-            throw std::invalid_argument("Coordinates must have exactly 8 elements");
-        }
-        std::copy(init.begin(), init.end(), coordinates.begin());
-    }
+    WireFrame(std::initializer_list<coord> init);
 
+    WireFrame(coord topLeft, double height, double length, double depth);
+
+    /* DEPRECATED
     friend std::ostream& operator << (std::ostream& os, const WireFrame& obj) {
         std::cout << obj.topLeft << "\n" << obj.botRight << "\n";
         return os;
-    }
+    }*/
 
     void rotate(int axis);
     void updateLocation(coord amount);

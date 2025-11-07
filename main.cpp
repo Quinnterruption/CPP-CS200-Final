@@ -23,7 +23,7 @@ double xOne = 1200;
 double xTwo = xOne + 100;
 double yOne = 600;
 double yTwo = yOne + 100;
-double dist1 = 100;
+double dist1 = 0;
 double dist2 = dist1 + 100;
 
 coord topFrontLeft = {xOne, yOne, dist1};
@@ -36,6 +36,7 @@ coord botFrontRight = {xTwo, yTwo, dist1};
 coord botFrontLeft = {xOne, yTwo, dist1};
 //WireFrame square = WireFrame(topLeft, botRight);
 WireFrame cube = WireFrame({topFrontLeft, topFrontRight, topBackRight, topBackLeft, botBackLeft, botBackRight, botFrontRight, botFrontLeft});
+WireFrame cube2 = WireFrame(topFrontLeft, 100, 100, 100);
 
 void onIdle(int w, int h, GameWindowBuffer& gameWindowBuffer) {
     gameWindowBuffer.clear();
@@ -47,8 +48,10 @@ void onIdle(int w, int h, GameWindowBuffer& gameWindowBuffer) {
 //    }
 
 //    gameWindowBuffer.drawSquare(square);
-    gameWindowBuffer.drawCube(cube);
-    cube.rotate(rotateZ | rotateY | rotateX);
+//    gameWindowBuffer.drawCube(cube);
+    gameWindowBuffer.drawCube(cube2);
+    cube2.rotate(rotateX | rotateY | rotateZ);
+//    cube.rotate(rotateZ | rotateY | rotateX);
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -121,10 +124,15 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     break;
             }
             break;
+        case WM_RBUTTONDOWN: {
+            cube.updateLocation({0, 0, 10});
+            break;
+        }
         case WM_LBUTTONDOWN: {
-            windowStuff.gameWindowBuffer.clear();
-            windowStuff.gameWindowBuffer.drawCube(cube);
-            cube.rotate(rotateZ);
+            cube.updateLocation({0, 0, -10});
+//            windowStuff.gameWindowBuffer.clear();
+//            windowStuff.gameWindowBuffer.drawCube(cube);
+//            cube.rotate(rotateZ);
             break;
         }
         case WM_CLOSE:

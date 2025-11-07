@@ -11,7 +11,7 @@
 
 struct GameWindowBuffer {
     unsigned char* memory = nullptr;
-    int FOV = 60;
+    int FOV = 90;
     int w = 0;
     int h = 0;
 
@@ -104,6 +104,7 @@ struct GameWindowBuffer {
 //        }
 //    }
 
+    /* DEPRECATED
     void drawSquare(WireFrame square) {
         double a = (w / 2.0) / (tan(FOV * M_PI / 360));
         double xShift = (square.topLeft[0] * square.topLeft[2]) / (a + square.topLeft[0]);
@@ -112,7 +113,7 @@ struct GameWindowBuffer {
         drawLine(square.topRight[0], square.topRight[1], square.botRight[0], square.botRight[1]);
         drawLine(square.botRight[0], square.botRight[1], square.botLeft[0], square.botLeft[1]);
         drawLine(square.botLeft[0], square.botLeft[1], square.topLeft[0], square.topLeft[1]);
-    }
+    }*/
 
     void drawCube(WireFrame cube) {
         double midX = (w / 2.0);
@@ -124,15 +125,10 @@ struct GameWindowBuffer {
             cube.coordinates[i][1] -= midY;
         }
         std::array<std::array<int, 2>, 8> projected = {};
-//        for (int i = 0; i < 8; i++) {
-//            projected[i] = {static_cast<int>(cube.coordinates[i][0]), static_cast<int>(cube.coordinates[i][1])};
-//        }
         for (int i = 0; i < 8; i++) {
             double xShift = (cube.coordinates[i][0] * cube.coordinates[i][2]) / (aX + cube.coordinates[i][0]);
-//            int projectedX = cube.coordinates[i][0] - xShift;
             int projectedX = (cube.coordinates[i][0] < midX) ? cube.coordinates[i][0] + xShift : cube.coordinates[i][0] - xShift;
             double yShift = (cube.coordinates[i][1] * cube.coordinates[i][2]) / (aY + cube.coordinates[i][1]);
-//            int projectedY = cube.coordinates[i][1] - yShift;
             int projectedY = (cube.coordinates[i][1] < midY) ? cube.coordinates[i][1] + yShift : cube.coordinates[i][1] - yShift;
             projected[i] = {projectedX, projectedY};
         }
