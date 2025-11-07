@@ -50,7 +50,7 @@ void onIdle(int w, int h, GameWindowBuffer& gameWindowBuffer) {
 //    gameWindowBuffer.drawSquare(square);
 //    gameWindowBuffer.drawCube(cube);
     gameWindowBuffer.drawCube(cube2);
-    cube2.rotate(rotateX | rotateY | rotateZ);
+//    cube2.rotate(rotateX | rotateY | rotateZ);
 //    cube.rotate(rotateZ | rotateY | rotateX);
 }
 
@@ -125,11 +125,11 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             }
             break;
         case WM_RBUTTONDOWN: {
-            cube.updateLocation({0, 0, 10});
+            cube2.updateLocation({0, 0, 10});
             break;
         }
         case WM_LBUTTONDOWN: {
-            cube.updateLocation({0, 0, -10});
+            cube2.updateLocation({0, 0, -10});
 //            windowStuff.gameWindowBuffer.clear();
 //            windowStuff.gameWindowBuffer.drawCube(cube);
 //            cube.rotate(rotateZ);
