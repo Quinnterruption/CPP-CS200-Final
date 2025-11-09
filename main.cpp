@@ -19,11 +19,11 @@ const char g_szClassName[] = "myWindowClass";
 coord topLeft = {300, 400, 500};
 coord botRight = {400, 600, 100};
 
-double xOne = 1200;
+double xOne = 700;
 double xTwo = xOne + 100;
-double yOne = 600;
+double yOne = 400;
 double yTwo = yOne + 100;
-double dist1 = 0;
+double dist1 = 100;
 double dist2 = dist1 + 100;
 
 coord topFrontLeft = {xOne, yOne, dist1};
@@ -177,7 +177,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             g_szClassName,
             "The title of my window",
             WS_OVERLAPPEDWINDOW,
-            CW_USEDEFAULT, CW_USEDEFAULT, 1920, 1080,
+            CW_USEDEFAULT, CW_USEDEFAULT, 1000, 1000,
             nullptr, nullptr, hInstance, nullptr
             );
 

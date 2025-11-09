@@ -122,19 +122,36 @@ struct GameWindowBuffer {
         double aY = (h / 2.0) / (tan(FOV * M_PI / 360.0));
         std::array<std::array<int, 2>, 8> projected = {};
         for (int i = 0; i < 8; i++) {
-            cube.coordinates[i][0] -= midX;
-            cube.coordinates[i][1] -= midY;
-            
-            double xShift = (cube.coordinates[i][0] * cube.coordinates[i][2]) / (aX + cube.coordinates[i][2]);
-//            int projectedX = (cube.coordinates[i][0] < midX) ? cube.coordinates[i][0] + xShift : cube.coordinates[i][0] - xShift;
-            double yShift = (cube.coordinates[i][1] * cube.coordinates[i][2]) / (aY + cube.coordinates[i][2]);
-//            int projectedY = (cube.coordinates[i][1] < midY) ? cube.coordinates[i][1] + yShift : cube.coordinates[i][1] - yShift;
+            // cube.coordinates[i][0] -= midX;
+            // cube.coordinates[i][1] -= midY;
 
-            cube.coordinates[i][0] += midX;
-            cube.coordinates[i][1] += midY;
+            double xShift, yShift;
+            int projectedX = -1, projectedY = -1;
+            if (cube.coordinates[i][2] > 0) {
+                cube.coordinates[i][0] -= midX;
+                cube.coordinates[i][1] -= midY;
 
-            int projectedX = cube.coordinates[i][0] + xShift;
-            int projectedY = cube.coordinates[i][1] + yShift;
+                xShift = cube.coordinates[i][0] * (cube.coordinates[i][2] - aX) / cube.coordinates[i][2];
+                yShift = cube.coordinates[i][1] * (cube.coordinates[i][2] - aY) / cube.coordinates[i][2];
+
+                cube.coordinates[i][0] += midX;
+                cube.coordinates[i][1] += midY;
+
+                projectedX = (cube.coordinates[i][0] < midX) ? cube.coordinates[i][0] + xShift : cube.coordinates[i][0] - xShift;
+                projectedY = (cube.coordinates[i][1] < midY) ? cube.coordinates[i][1] + yShift : cube.coordinates[i][1] - yShift;
+            }
+            // double xShift = (cube.coordinates[i][0] * cube.coordinates[i][2]) / (aX + cube.coordinates[i][2]);
+            // double yShift = (cube.coordinates[i][1] * cube.coordinates[i][2]) / (aY + cube.coordinates[i][2]);
+
+            // cube.coordinates[i][0] += midX;
+            // cube.coordinates[i][1] += midY;
+
+            // int projectedX = cube.coordinates[i][0] + xShift;
+            // int projectedY = cube.coordinates[i][1] + yShift;
+
+            // projectedX = (cube.coordinates[i][0] < midX) ? cube.coordinates[i][0] + xShift : cube.coordinates[i][0] - xShift;
+            // projectedY = (cube.coordinates[i][1] < midY) ? cube.coordinates[i][1] + yShift : cube.coordinates[i][1] - yShift;
+
             projected[i] = {projectedX, projectedY};
         }
 
