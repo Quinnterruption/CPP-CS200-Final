@@ -131,11 +131,14 @@ struct GameWindowBuffer {
                 cube.coordinates[i][0] -= midX;
                 cube.coordinates[i][1] -= midY;
 
-                xShift = cube.coordinates[i][0] * (cube.coordinates[i][2] - aX) / cube.coordinates[i][2];
-                yShift = cube.coordinates[i][1] * (cube.coordinates[i][2] - aY) / cube.coordinates[i][2];
+                xShift = abs(cube.coordinates[i][0]) * (cube.coordinates[i][2] - aX) / cube.coordinates[i][2];
+                yShift = abs(cube.coordinates[i][1]) * (cube.coordinates[i][2] - aY) / cube.coordinates[i][2];
 
                 cube.coordinates[i][0] += midX;
                 cube.coordinates[i][1] += midY;
+
+//                projectedX = cube.coordinates[i][0] + xShift;
+//                projectedY = cube.coordinates[i][1] + yShift;
 
                 projectedX = (cube.coordinates[i][0] < midX) ? cube.coordinates[i][0] + xShift : cube.coordinates[i][0] - xShift;
                 projectedY = (cube.coordinates[i][1] < midY) ? cube.coordinates[i][1] + yShift : cube.coordinates[i][1] - yShift;
@@ -152,6 +155,8 @@ struct GameWindowBuffer {
             // projectedX = (cube.coordinates[i][0] < midX) ? cube.coordinates[i][0] + xShift : cube.coordinates[i][0] - xShift;
             // projectedY = (cube.coordinates[i][1] < midY) ? cube.coordinates[i][1] + yShift : cube.coordinates[i][1] - yShift;
 
+            std::cout << cube.coordinates[i][0] << " " << projectedX << '\n';
+            std::cout << cube.coordinates[i][1] << " " << projectedY << '\n';
             projected[i] = {projectedX, projectedY};
         }
 
