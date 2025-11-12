@@ -155,8 +155,6 @@ struct GameWindowBuffer {
             // projectedX = (cube.coordinates[i][0] < midX) ? cube.coordinates[i][0] + xShift : cube.coordinates[i][0] - xShift;
             // projectedY = (cube.coordinates[i][1] < midY) ? cube.coordinates[i][1] + yShift : cube.coordinates[i][1] - yShift;
 
-            std::cout << cube.coordinates[i][0] << " " << projectedX << '\n';
-            std::cout << cube.coordinates[i][1] << " " << projectedY << '\n';
             projected[i] = {projectedX, projectedY};
         }
 

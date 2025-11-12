@@ -4,6 +4,10 @@ IDR_MYMENU MENU
 BEGIN
     POPUP "&File"
     BEGIN
+        POPUP "&New"
+        BEGIN
+            MENUITEM "&Cube", ID_FILE_NEW_CUBE
+        END
         MENUITEM "E&xit", ID_FILE_EXIT
     END
 
