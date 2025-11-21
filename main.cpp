@@ -5,6 +5,7 @@
 #include "resources/resource.h"
 #include "extra/wireFrame.h"
 #include "extra/windowBuffer.h"
+#include "extra/playback.h"
 
 struct WindowStuff {
     bool running = true;
@@ -12,6 +13,7 @@ struct WindowStuff {
     BITMAPINFO bitmapInfo = {};
     WindowBuffer windowBuffer = {};
     std::vector<WireFrame> wireFrames = {};
+    Playback playback;
 };
 
 WindowStuff windowStuff;
@@ -105,6 +107,18 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     windowStuff.wireFrames.emplace_back(coord{400, 300, 1000}, 100, 100, 100);
                     break;
                 }
+                case ID_FILE_RECORD_TEN: {
+                    windowStuff.playback.startRecord(10);
+                    break;
+                }
+                case ID_FILE_RECORD_FIFTEEN: {
+                    windowStuff.playback.startRecord(15);
+                    break;
+                }
+                case ID_FILE_RECORD_THIRTY: {
+                    windowStuff.playback.startRecord(30);
+                    break;
+                }
                 case ID_FILE_EXIT:
                     if (MessageBox(hwnd, "Are you sure?", "WARNING!", MB_YESNO) == IDYES) {
                         windowStuff.running = false;
@@ -122,24 +136,31 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             switch (wParam) {
                 case VK_UP:
                     windowStuff.wireFrames[0].updateLocation({0, -10, 0});
+                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case VK_DOWN:
                     windowStuff.wireFrames[0].updateLocation({0, 10, 0});
+                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case VK_LEFT:
                     windowStuff.wireFrames[0].updateLocation({-10, 0, 0});
+                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case VK_RIGHT:
                     windowStuff.wireFrames[0].updateLocation({10, 0, 0});
+                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case 88: // X
                     windowStuff.wireFrames[0].toggleRotation(rotateX);
+                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case 89: // Y
                     windowStuff.wireFrames[0].toggleRotation(rotateY);
+                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case 90: // Z
                     windowStuff.wireFrames[0].toggleRotation(rotateZ);
+                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 default:
                     std::cout << wParam << '\n';
@@ -148,10 +169,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         case WM_RBUTTONDOWN: {
             windowStuff.wireFrames[0].updateLocation({0, 0, 100});
+            windowStuff.playback.update(windowStuff.wireFrames[0]);
             break;
         }
         case WM_LBUTTONDOWN: {
             windowStuff.wireFrames[0].updateLocation({0, 0, -100});
+            windowStuff.playback.update(windowStuff.wireFrames[0]);
             break;
         }
         case WM_CLOSE:

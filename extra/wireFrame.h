@@ -61,9 +61,9 @@ class WireFrame {
     coord getOrigin();
     static matrix3 matrixMult(const matrix3& first, const matrix3& second);
 
-    coord midPoint;
     int rotateFlags = 0;
 public:
+    coord midPoint;
     array<coord, 8> coordinates;
 
     WireFrame(std::initializer_list<coord> init);
@@ -75,6 +75,7 @@ public:
         return os;
     }*/
 
+    int getRotation();
     void setRotation(int axis);
     void toggleRotation(int axis);
     void rotate();

@@ -9,15 +9,19 @@ constexpr double DEGREES = 2;
 constexpr double THETA = DEGREES * M_PI / 180.0;
 
 const matrix3 xRotate = {{{1.0, 0.0, 0.0},
-                    {0.0, cos(THETA), -sin(THETA)},
-                    {0.0, sin(THETA), cos(THETA)}}};
+                        {0.0, cos(THETA), -sin(THETA)},
+                        {0.0, sin(THETA), cos(THETA)}}};
 const matrix3 yRotate = {{{cos(THETA), 0.0, sin(THETA)},
-                    {0.0, 1.0, 0.0},
-                    {-sin(THETA), 0.0, cos(THETA)}}};
+                        {0.0, 1.0, 0.0},
+                        {-sin(THETA), 0.0, cos(THETA)}}};
 const matrix3 zRotate = {{{cos(THETA), -sin(THETA), 0.0},
-                    {sin(THETA), cos(THETA), 0.0},
-                    {0.0, 0.0, 1.0}}};
+                        {sin(THETA), cos(THETA), 0.0},
+                        {0.0, 0.0, 1.0}}};
 
+
+int WireFrame::getRotation() {
+    return rotateFlags;
+}
 
 void WireFrame::setRotation(const int axis) {
     rotateFlags = axis;
@@ -41,16 +45,13 @@ void WireFrame::rotate() {
         rotateMatrix = matrixMult(rotateMatrix, zRotate);
     }
 
+    std::array<coord, 8> newCoord;
     for (int i = 0; i < 8; i++) {
         coordinates[i] -= midPoint;
-    }
-    std::array<coord, 8> newCoord = coordinates;
-    for (int i = 0; i < 3; i++) {
-        for (int j = 0; j < 8; j++) {
-            newCoord[j][i] = coordinates[j][0] * rotateMatrix[i][0] + coordinates[j][1] * rotateMatrix[i][1] + coordinates[j][2] * rotateMatrix[i][2];
+
+        for (int j = 0; j < 3; j++) {
+            newCoord[i][j] = coordinates[i][0] * rotateMatrix[j][0] + coordinates[i][1] * rotateMatrix[j][1] + coordinates[i][2] * rotateMatrix[j][2];
         }
-    }
-    for (int i = 0; i < 8; i++) {
         newCoord[i] += midPoint;
     }
     coordinates = newCoord;
@@ -65,7 +66,7 @@ coord WireFrame::getOrigin() {
 }
 
 matrix3 WireFrame::matrixMult(const matrix3& first, const matrix3& second) {
-    matrix3 result{};
+    matrix3 result;
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             result[i][j] = first[i][0] * second[0][j] + first[i][1] * second[1][j] + first[i][2] * second[2][j];

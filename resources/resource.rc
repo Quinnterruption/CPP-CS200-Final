@@ -8,6 +8,12 @@ BEGIN
         BEGIN
             MENUITEM "&Cube", ID_FILE_NEW_CUBE
         END
+        POPUP "&Record"
+        BEGIN
+            MENUITEM "&10Sec", ID_FILE_RECORD_TEN
+            MENUITEM "&15Sec", ID_FILE_RECORD_FIFTEEN
+            MENUITEM "&30Sec", ID_FILE_RECORD_THIRTY
+        END
         MENUITEM "E&xit", ID_FILE_EXIT
     END
 
