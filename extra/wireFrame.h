@@ -60,7 +60,7 @@ enum rotationFlags {
 
 class wireFrame {
     coord getOrigin();
-    matrix3 matrixMult(const matrix3& first, const matrix3& second);
+    static matrix3 matrixMult(const matrix3& first, const matrix3& second);
     coord midPoint = {0, 0, 0};
     int rotateFlags = 0;
 public:
@@ -89,6 +89,7 @@ public:
     void rotate();
     void updateLocation(coord amount);
 };
+
 
 
 #endif //FINALPROJECT_WIREFRAME_H
