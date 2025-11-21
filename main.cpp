@@ -1,14 +1,17 @@
 #include <windows.h>
 #include <iostream>
+#include <vector>
+
 #include "resources/resource.h"
-#include "extra/WireFrame.h"
-#include "extra/gameWindowBuffer.h"
+#include "extra/wireFrame.h"
+#include "extra/windowBuffer.h"
 
 struct WindowStuff {
     bool running = true;
 
     BITMAPINFO bitmapInfo = {};
-    GameWindowBuffer gameWindowBuffer = {};
+    WindowBuffer windowBuffer = {};
+    std::vector<wireFrame> wireFrames = {};
 };
 
 WindowStuff windowStuff;
@@ -17,46 +20,24 @@ RECT rect = {};
 constexpr int START_WIDTH = 1280, START_HEIGHT = 720;
 int width, height;
 const char g_szClassName[] = "myWindowClass";
-coord topLeft = {300, 400, 500};
-coord botRight = {400, 600, 100};
 
-double xOne = 580;
-// double xTwo = xOne + 100;
-double yOne = 280;
-// double yTwo = yOne + 100;
-double dist1 = 500;
-// double dist2 = dist1 + 100;
+void onIdle(int w, int h, WindowBuffer& windowBuffer) {
+    windowBuffer.clear();
 
-coord topFrontLeft = {xOne, yOne, dist1};
-// coord topFrontRight = {xTwo, yOne, dist1};
-// coord topBackRight = {xTwo, yOne, dist2};
-// coord topBackLeft = {xOne, yOne, dist2};
-// coord botBackLeft = {xOne, yTwo, dist2};
-// coord botBackRight = {xTwo, yTwo, dist2};
-// coord botFrontRight = {xTwo, yTwo, dist1};
-// coord botFrontLeft = {xOne, yTwo, dist1};
-//WireFrame square = WireFrame(topLeft, botRight);
-// WireFrame cube = WireFrame({topFrontLeft, topFrontRight, topBackRight, topBackLeft, botBackLeft, botBackRight, botFrontRight, botFrontLeft});
-WireFrame cube2 = WireFrame(topFrontLeft, 100, 100, 100);
-WireFrame cube3 = WireFrame({0, 0, 0}, 0, 0, 0);;
-
-void onIdle(int w, int h, GameWindowBuffer& gameWindowBuffer) {
-    gameWindowBuffer.clear();
-
-    gameWindowBuffer.drawAtSafe(width / 2, height / 2, 255, 0, 0);
-
-//    for (int i = 0; i < gameWindowBuffer.w; i++) {
-//        for (int j = 0; j < gameWindowBuffer.h; j++) {
-//            gameWindowBuffer.drawAtSafe(i, j, i % 256, j % 256, (i * j) % 256);
-//        }
-//    }
+    /*
+    for (int i = 0; i < gameWindowBuffer.w; i++) {
+        for (int j = 0; j < gameWindowBuffer.h; j++) {
+            gameWindowBuffer.drawAtSafe(i, j, i % 256, j % 256, (i * j) % 256);
+        }
+    }
+    */
 
 //    gameWindowBuffer.drawSquare(square);
 //    gameWindowBuffer.drawCube(cube);
-    gameWindowBuffer.drawCube(cube3);
-    gameWindowBuffer.drawCube(cube2);
-    // cube2.rotate(rotateX | rotateY | rotateZ);
-//    cube.rotate(rotateZ | rotateY | rotateX);
+    for (wireFrame& wireFrame : windowStuff.wireFrames) {
+        windowBuffer.drawCube(wireFrame);
+        wireFrame.rotate();
+    }
 }
 
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
@@ -65,7 +46,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             GetClientRect(hwnd, &rect);
             height = rect.bottom;
             width = rect.right;
-            resetWindowBuffer(&windowStuff.gameWindowBuffer, &windowStuff.bitmapInfo, hwnd);
+            resetWindowBuffer(&windowStuff.windowBuffer, &windowStuff.bitmapInfo, hwnd);
             break;
         }
         case WM_PAINT: {
@@ -75,9 +56,9 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             HDC hdc = GetDC(hwnd);
 
             StretchDIBits(hdc,
-                          0, 0, windowStuff.gameWindowBuffer.w, windowStuff.gameWindowBuffer.h,
-                          0, 0, windowStuff.gameWindowBuffer.w, windowStuff.gameWindowBuffer.h,
-                          windowStuff.gameWindowBuffer.memory,
+                          0, 0, windowStuff.windowBuffer.w, windowStuff.windowBuffer.h,
+                          0, 0, windowStuff.windowBuffer.w, windowStuff.windowBuffer.h,
+                          windowStuff.windowBuffer.memory,
                           &windowStuff.bitmapInfo,
                           DIB_RGB_COLORS,
                           SRCCOPY
@@ -119,30 +100,61 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 //            }
 //            break;
 //        }
-        case WM_COMMAND:
+        case WM_COMMAND: {
             switch(LOWORD(wParam)) {
                 case ID_FILE_NEW_CUBE: {
-                    cube3 = WireFrame({400, 300, 1000}, 100, 100, 100);
+                    // DialogBox(nullptr, MAKEINTRESOURCE(IDD_MYDIALOG), hwnd, (DLGPROC)DeleteItemProc);
+                    windowStuff.wireFrames.emplace_back(coord{400, 300, 1000}, 100, 100, 100);
                     break;
                 }
                     // WireFrame cube = WireFrame(, 100, 100, 100);
                 case ID_FILE_EXIT:
-//                    square.updateLocation({-10, -10, -10});
+                    if (MessageBox(hwnd, "Are you sure?", "WARNING!", MB_YESNO) == IDYES) {
+                        windowStuff.running = false;
+                    }
                     break;
                 case ID_STUFF_GO:
-//                    square.updateLocation({10, 10, 10});
+                    //                    square.updateLocation({10, 10, 10});
                     break;
+                default:
+                    std::cout << LOWORD(wParam) << '\n';
             }
             break;
+        }
+        case WM_KEYDOWN: {
+            switch (wParam) {
+                case VK_UP:
+                    windowStuff.wireFrames[0].updateLocation({0, -10, 0});
+                    break;
+                case VK_DOWN:
+                    windowStuff.wireFrames[0].updateLocation({0, 10, 0});
+                    break;
+                case VK_LEFT:
+                    windowStuff.wireFrames[0].updateLocation({-10, 0, 0});
+                    break;
+                case VK_RIGHT:
+                    windowStuff.wireFrames[0].updateLocation({10, 0, 0});
+                    break;
+                case 88: // X
+                    windowStuff.wireFrames[0].toggleRotation(rotateX);
+                    break;
+                case 89: // Y
+                    windowStuff.wireFrames[0].toggleRotation(rotateY);
+                    break;
+                case 90: // Z
+                    windowStuff.wireFrames[0].toggleRotation(rotateZ);
+                    break;
+                default:
+                    std::cout << wParam << '\n';
+            }
+            break;
+        }
         case WM_RBUTTONDOWN: {
-            cube2.updateLocation({0, 0, 10});
+            windowStuff.wireFrames[0].updateLocation({0, 0, 100});
             break;
         }
         case WM_LBUTTONDOWN: {
-            cube2.updateLocation({0, 0, -10});
-//            windowStuff.gameWindowBuffer.clear();
-//            windowStuff.gameWindowBuffer.drawCube(cube);
-//            cube.rotate(rotateZ);
+            windowStuff.wireFrames[0].updateLocation({0, 0, -100});
             break;
         }
         case WM_CLOSE:
@@ -158,6 +170,8 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
 }
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+    windowStuff.wireFrames.emplace_back(coord{580, 280, 500}, 100, 100, 100);
+
     WNDCLASSEX wc;
     HWND hwnd;
     MSG Msg;
@@ -185,13 +199,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     hwnd = CreateWindowEx(
             WS_EX_CLIENTEDGE,
             g_szClassName,
-            "The title of my window",
+            "3D Renderer",
             WS_OVERLAPPEDWINDOW,
             CW_USEDEFAULT, CW_USEDEFAULT, START_WIDTH, START_HEIGHT,
             nullptr, nullptr, hInstance, nullptr
             );
 
-    resetWindowBuffer(&windowStuff.gameWindowBuffer, &windowStuff.bitmapInfo, hwnd);
+    resetWindowBuffer(&windowStuff.windowBuffer, &windowStuff.bitmapInfo, hwnd);
 
     if (hwnd == nullptr) {
         MessageBox(nullptr, "Window Creation Failed!", "ERROR", MB_ICONEXCLAMATION | MB_OK);
@@ -211,7 +225,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
             TranslateMessage(&Msg);
             DispatchMessage(&Msg);
         } else {
-            onIdle(width, height, windowStuff.gameWindowBuffer);
+            onIdle(width, height, windowStuff.windowBuffer);
             SendMessage(hwnd, WM_PAINT, 0, 0);
         }
     }

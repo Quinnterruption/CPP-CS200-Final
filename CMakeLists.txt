@@ -3,4 +3,6 @@ project(FinalProject)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(FinalProject main.cpp extra/WireFrame.h extra/WireFrame.cpp resources/resource.h resources/resource.rc extra/gameWindowBuffer.cpp)
+add_executable(FinalProject main.cpp extra/WireFrame.h extra/wireFrame.cpp resources/resource.h resources/resource.rc extra/windowBuffer.cpp
+        extra/playback.cpp
+        extra/playback.h)

@@ -1,6 +1,11 @@
 #define IDR_MYMENU 101
 #define IDI_MYICON 201
+#define IDD_MYDIALOG 301
 
 #define ID_FILE_NEW_CUBE 9001
 #define ID_FILE_EXIT 9002
 #define ID_STUFF_GO 9003
+#define ID_OK 9004
+#define ID_CANCEL 9005
+#define IDC_STATIC 9006
+#define IDC_EDIT1 9007
