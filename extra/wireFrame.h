@@ -4,7 +4,6 @@
 
 #ifndef FINALPROJECT_WIREFRAME_H
 #define FINALPROJECT_WIREFRAME_H
-
 #include <iostream>
 #include <array>
 
@@ -17,7 +16,7 @@ struct coord {
 
     coord() = default;
 
-    coord(std::initializer_list<double> init) {
+    coord(const std::initializer_list<double> init) {
         if (init.size() != 3) {
             throw std::invalid_argument("Coord must have exactly 3 elements");
         }
@@ -43,11 +42,11 @@ struct coord {
         return *this;
     }
 
-    double& operator[](std::size_t idx) {
+    double& operator[](const std::size_t idx) {
         return coordinates[idx];
     }
 
-    const double& operator[](std::size_t idx) const {
+    const double& operator[](const std::size_t idx) const {
         return coordinates[idx];
     }
 };
@@ -58,23 +57,17 @@ enum rotationFlags {
     rotateZ = 4
 };
 
-class wireFrame {
+class WireFrame {
     coord getOrigin();
     static matrix3 matrixMult(const matrix3& first, const matrix3& second);
-    coord midPoint = {0, 0, 0};
+
+    coord midPoint;
     int rotateFlags = 0;
 public:
-    array<coord, 8> coordinates = {{{0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}, {0, 0, 0}}};
+    array<coord, 8> coordinates;
 
-    /* DEPRECATED
-    WireFrame(coord topLeft, coord botRight) : topLeft(topLeft), botRight(botRight) {
-        topRight = {botRight[0], topLeft[1], 0};
-        botLeft = {topLeft[0], botRight[1], 0};
-    }*/
-
-    wireFrame(std::initializer_list<coord> init);
-
-    wireFrame(coord topLeft, double height, double length, double depth);
+    WireFrame(std::initializer_list<coord> init);
+    WireFrame(const coord &topLeft, double height, double length, double depth);
 
     /* DEPRECATED
     friend std::ostream& operator << (std::ostream& os, const WireFrame& obj) {
@@ -83,13 +76,10 @@ public:
     }*/
 
     void setRotation(int axis);
-
     void toggleRotation(int axis);
-
     void rotate();
-    void updateLocation(coord amount);
+    void updateLocation(const coord &amount);
 };
-
 
 
 #endif //FINALPROJECT_WIREFRAME_H

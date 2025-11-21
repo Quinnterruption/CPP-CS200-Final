@@ -11,7 +11,7 @@ struct WindowStuff {
 
     BITMAPINFO bitmapInfo = {};
     WindowBuffer windowBuffer = {};
-    std::vector<wireFrame> wireFrames = {};
+    std::vector<WireFrame> wireFrames = {};
 };
 
 WindowStuff windowStuff;
@@ -32,9 +32,7 @@ void onIdle(int w, int h, WindowBuffer& windowBuffer) {
     }
     */
 
-//    gameWindowBuffer.drawSquare(square);
-//    gameWindowBuffer.drawCube(cube);
-    for (wireFrame& wireFrame : windowStuff.wireFrames) {
+    for (WireFrame& wireFrame : windowStuff.wireFrames) {
         windowBuffer.drawCube(wireFrame);
         wireFrame.rotate();
     }
@@ -107,7 +105,6 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     windowStuff.wireFrames.emplace_back(coord{400, 300, 1000}, 100, 100, 100);
                     break;
                 }
-                    // WireFrame cube = WireFrame(, 100, 100, 100);
                 case ID_FILE_EXIT:
                     if (MessageBox(hwnd, "Are you sure?", "WARNING!", MB_YESNO) == IDYES) {
                         windowStuff.running = false;
