@@ -6,7 +6,6 @@
 
 #ifndef FINALPROJECT_PLAYBACK_H
 #define FINALPROJECT_PLAYBACK_H
-#include <vector>
 #include <chrono>
 #include <fstream>
 #include <windef.h>
@@ -22,13 +21,16 @@ class Playback {
 public:
     Playback() = default;
 
-    uint64_t currentTimeMillis();
-    void startRecord(int length);
+    static uint64_t currentTimeMillis();
+    void startRecord(int duration);
+
+    void startRecord(const std::string &name, int duration);
+
     void endRecord();
     bool recording();
     void update(WireFrame wireFrame);
 
-    void replay(HWND__* hwnd, WindowBuffer& windowBuffer);
+    void replay(HWND__ *hwnd, WindowBuffer &windowBuffer, const std::string& filePath);
 };
 
 

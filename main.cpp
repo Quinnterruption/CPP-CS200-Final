@@ -123,7 +123,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     break;
                 }
                 case ID_FILE_PLAY: {
-                    windowStuff.playback.replay(hwnd, windowStuff.windowBuffer);
+                    // windowStuff.playback.replay(hwnd, windowStuff.windowBuffer, TODO);
                     break;
                 }
                 case ID_FILE_EXIT:
@@ -245,6 +245,8 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     GetClientRect(hwnd, &rect);
     height = rect.bottom;
     width = rect.right;
+
+    windowStuff.playback.replay(hwnd, windowStuff.windowBuffer, lpCmdLine);
 
     // Step 3: "Game" Loop
     while (windowStuff.running) {

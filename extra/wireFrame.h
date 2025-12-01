@@ -29,7 +29,16 @@ struct coord {
         return os;
     }
 
-    coord operator+(const coord& obj) {
+    static coord stoc(std::string str) {
+        double x = std::stoi(str.substr(0, str.find(',')));
+        str = str.substr(str.find(',') + 1);
+        double y = std::stoi(str.substr(0, str.find(',')));
+        str = str.substr(str.find(',') + 1);
+        double z = std::stoi(str.substr(0, str.find(',')));
+        return {x, y, z};
+    }
+
+    coord operator+(const coord& obj) const {
         coord temp = {};
         for (int i = 0; i < 3; i++) {
             temp[i] = coordinates[i] + obj[i];
@@ -37,7 +46,7 @@ struct coord {
         return temp;
     }
 
-    coord operator-(const coord& obj) {
+    coord operator-(const coord& obj) const {
         coord temp = {};
         for (int i = 0; i < 3; i++) {
             temp[i] = coordinates[i] - obj[i];
