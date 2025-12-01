@@ -10,10 +10,11 @@ BEGIN
         END
         POPUP "&Record"
         BEGIN
-            MENUITEM "&10Sec", ID_FILE_RECORD_TEN
-            MENUITEM "&15Sec", ID_FILE_RECORD_FIFTEEN
-            MENUITEM "&30Sec", ID_FILE_RECORD_THIRTY
+            MENUITEM "&10 Seconds", ID_FILE_RECORD_TEN
+            MENUITEM "&15 Seconds", ID_FILE_RECORD_FIFTEEN
+            MENUITEM "&30 Seconds", ID_FILE_RECORD_THIRTY
         END
+        MENUITEM "&Play", ID_FILE_PLAY
         MENUITEM "E&xit", ID_FILE_EXIT
     END
 

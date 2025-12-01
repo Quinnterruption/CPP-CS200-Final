@@ -12,3 +12,4 @@
 #define ID_CANCEL 9008
 #define IDC_STATIC 9009
 #define IDC_EDIT1 9010
+#define ID_FILE_PLAY 9011

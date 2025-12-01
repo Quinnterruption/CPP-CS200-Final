@@ -6,6 +6,7 @@
 #define FINALPROJECT_WIREFRAME_H
 #include <iostream>
 #include <array>
+#include <fstream>
 
 #define matrix3 std::array<std::array<double, 3>, 3>
 
@@ -24,8 +25,24 @@ struct coord {
     }
 
     friend std::ostream& operator<<(std::ostream& os, const coord& obj) {
-        std::cout << "{" << obj[0] << ", " << obj[1] << ", " << obj[2] << "}";
+        os << obj[0] << ',' << obj[1] << ',' << obj[2];
         return os;
+    }
+
+    coord operator+(const coord& obj) {
+        coord temp = {};
+        for (int i = 0; i < 3; i++) {
+            temp[i] = coordinates[i] + obj[i];
+        }
+        return temp;
+    }
+
+    coord operator-(const coord& obj) {
+        coord temp = {};
+        for (int i = 0; i < 3; i++) {
+            temp[i] = coordinates[i] - obj[i];
+        }
+        return temp;
     }
 
     coord& operator-=(const coord& obj) {
@@ -40,6 +57,10 @@ struct coord {
             coordinates[i] += obj[i];
         }
         return *this;
+    }
+
+    bool operator==(const coord& obj) const {
+        return coordinates == obj.coordinates;
     }
 
     double& operator[](const std::size_t idx) {
@@ -62,10 +83,14 @@ class WireFrame {
     static matrix3 matrixMult(const matrix3& first, const matrix3& second);
 
     int rotateFlags = 0;
+    int length = 0;
+    int height = 0;
+    int depth = 0;
 public:
     coord midPoint;
     array<coord, 8> coordinates;
 
+    WireFrame() = default;
     WireFrame(std::initializer_list<coord> init);
     WireFrame(const coord &topLeft, double height, double length, double depth);
 
@@ -75,6 +100,7 @@ public:
         return os;
     }*/
 
+    bool operator==(const WireFrame& obj) const;
     int getRotation();
     void setRotation(int axis);
     void toggleRotation(int axis);

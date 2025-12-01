@@ -66,7 +66,7 @@ coord WireFrame::getOrigin() {
 }
 
 matrix3 WireFrame::matrixMult(const matrix3& first, const matrix3& second) {
-    matrix3 result;
+    matrix3 result = {};
     for (int i = 0; i < 3; i++) {
         for (int j = 0; j < 3; j++) {
             result[i][j] = first[i][0] * second[0][j] + first[i][1] * second[1][j] + first[i][2] * second[2][j];
@@ -87,10 +87,13 @@ WireFrame::WireFrame(const std::initializer_list<coord> init) {
         throw std::invalid_argument("Coordinates must have exactly 8 elements");
     }
     std::copy(init.begin(), init.end(), coordinates.begin());
+    length = abs(coordinates[0][0] - coordinates[1][0]);
+    height = abs(coordinates[3][1] - coordinates[4][1]);
+    depth = abs(coordinates[1][2] - coordinates[2][2]);
     midPoint = getOrigin();
 }
 
-WireFrame::WireFrame(const coord &topLeft, double height, double length, double depth) {
+WireFrame::WireFrame(const coord &topLeft, double height, double length, double depth) : length(length), height(height), depth(depth){
     for (coord& coordinate : coordinates) {
         coordinate = topLeft;
     }
@@ -102,4 +105,8 @@ WireFrame::WireFrame(const coord &topLeft, double height, double length, double 
     coordinates[6] += {length, height, 0};
     coordinates[7] += {0, height, 0};
     midPoint = getOrigin();
+}
+
+bool WireFrame::operator==(const WireFrame &obj) const {
+    return length == obj.length && midPoint == obj.midPoint && rotateFlags == obj.rotateFlags;
 }

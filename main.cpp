@@ -19,7 +19,7 @@ struct WindowStuff {
 WindowStuff windowStuff;
 RECT rect = {};
 
-constexpr int START_WIDTH = 1280, START_HEIGHT = 720;
+constexpr int START_WIDTH = 1920, START_HEIGHT = 1080;
 int width, height;
 const char g_szClassName[] = "myWindowClass";
 
@@ -37,6 +37,9 @@ void onIdle(int w, int h, WindowBuffer& windowBuffer) {
     for (WireFrame& wireFrame : windowStuff.wireFrames) {
         windowBuffer.drawCube(wireFrame);
         wireFrame.rotate();
+        if (windowStuff.playback.recording()) {
+            windowStuff.playback.update(wireFrame);
+        }
     }
 }
 
@@ -119,6 +122,10 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     windowStuff.playback.startRecord(30);
                     break;
                 }
+                case ID_FILE_PLAY: {
+                    windowStuff.playback.replay(hwnd, windowStuff.windowBuffer);
+                    break;
+                }
                 case ID_FILE_EXIT:
                     if (MessageBox(hwnd, "Are you sure?", "WARNING!", MB_YESNO) == IDYES) {
                         windowStuff.running = false;
@@ -136,31 +143,31 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
             switch (wParam) {
                 case VK_UP:
                     windowStuff.wireFrames[0].updateLocation({0, -10, 0});
-                    windowStuff.playback.update(windowStuff.wireFrames[0]);
+//                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case VK_DOWN:
                     windowStuff.wireFrames[0].updateLocation({0, 10, 0});
-                    windowStuff.playback.update(windowStuff.wireFrames[0]);
+//                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case VK_LEFT:
                     windowStuff.wireFrames[0].updateLocation({-10, 0, 0});
-                    windowStuff.playback.update(windowStuff.wireFrames[0]);
+//                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case VK_RIGHT:
                     windowStuff.wireFrames[0].updateLocation({10, 0, 0});
-                    windowStuff.playback.update(windowStuff.wireFrames[0]);
+//                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case 88: // X
                     windowStuff.wireFrames[0].toggleRotation(rotateX);
-                    windowStuff.playback.update(windowStuff.wireFrames[0]);
+//                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case 89: // Y
                     windowStuff.wireFrames[0].toggleRotation(rotateY);
-                    windowStuff.playback.update(windowStuff.wireFrames[0]);
+//                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 case 90: // Z
                     windowStuff.wireFrames[0].toggleRotation(rotateZ);
-                    windowStuff.playback.update(windowStuff.wireFrames[0]);
+//                    windowStuff.playback.update(windowStuff.wireFrames[0]);
                     break;
                 default:
                     std::cout << wParam << '\n';
@@ -169,12 +176,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
         }
         case WM_RBUTTONDOWN: {
             windowStuff.wireFrames[0].updateLocation({0, 0, 100});
-            windowStuff.playback.update(windowStuff.wireFrames[0]);
+//            windowStuff.playback.update(windowStuff.wireFrames[0]);
             break;
         }
         case WM_LBUTTONDOWN: {
             windowStuff.wireFrames[0].updateLocation({0, 0, -100});
-            windowStuff.playback.update(windowStuff.wireFrames[0]);
+//            windowStuff.playback.update(windowStuff.wireFrames[0]);
             break;
         }
         case WM_CLOSE:
