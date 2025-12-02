@@ -246,7 +246,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
     height = rect.bottom;
     width = rect.right;
 
-    windowStuff.playback.replay(hwnd, windowStuff.windowBuffer, lpCmdLine);
+    Playback::replay(hwnd, windowStuff.windowBuffer, lpCmdLine);
 
     // Step 3: "Game" Loop
     while (windowStuff.running) {

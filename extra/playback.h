@@ -22,15 +22,13 @@ public:
     Playback() = default;
 
     static uint64_t currentTimeMillis();
+
     void startRecord(int duration);
-
     void startRecord(const std::string &name, int duration);
-
     void endRecord();
     bool recording();
     void update(WireFrame wireFrame);
-
-    void replay(HWND__ *hwnd, WindowBuffer &windowBuffer, const std::string& filePath);
+    static void replay(HWND__ *hwnd, WindowBuffer &windowBuffer, const std::string& filePath);
 };
 
 

@@ -38,6 +38,7 @@ struct WindowBuffer {
 
     void drawSquare(array<int, 2> first, array<int, 2> second, array<int, 2> third, array<int, 2> fourth);
     void drawLine(int x1, int y1, int x2, int y2);
+    void drawCube(WireFrame cube);
 
 //    void drawLine(int x1, int y1, int x2, int y2) {
 //        int dx = abs(x2 - x1);
@@ -62,8 +63,6 @@ struct WindowBuffer {
 //            }
 //        }
 //    }
-
-    void drawCube(WireFrame cube);
 };
 
 void resetWindowBuffer(WindowBuffer* windowBuffer, BITMAPINFO* bitmapInfo, HWND hwnd);
